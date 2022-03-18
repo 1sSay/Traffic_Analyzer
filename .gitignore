@@ -1,0 +1,10 @@
+*.JPG
+*.MP4
+*.avi
+*.MP4
+*.onnx
+*.jpg
+.idea/Model_with_tracking.iml
+*.pyc
+photo_process_ba.py
+.idea/inspectionProfiles/profiles_settings.xml
