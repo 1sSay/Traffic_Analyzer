@@ -1,6 +1,5 @@
 from settings import confidence_threshold, width_and_height_threshold, area_threshold
 
-
 def ExtendedNonMaximumSupression(objects,
                                  nms_threshold=0.4,
                                  destroy_objects_on_border=False,

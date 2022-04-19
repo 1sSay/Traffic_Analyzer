@@ -5,9 +5,6 @@ import math
 import concurrent.futures
 from sys import stdout
 
-from PIL import Image
-from PIL import ImageDraw
-
 import cv2 as cv
 import numpy as np
 
@@ -26,11 +23,8 @@ def process_image(image, image_path):
     for x in x_coord:
         for y in y_coord:
             sample = image_for_slicing[:, :, y:y + blob_size, x:x + blob_size].copy()
-            # sample = cv.cvtColor(sample, cv.COLOR_BGR2RGB)
-            # sample = np.expand_dims(np.transpose(np.array(sample, dtype='float32'), [2, 0, 1]) / 255., axis=0)
 
             detections = sess.run(output_names, {input_name: sample})
-            sample_detections = list()
 
             for b, s in zip(detections[0][0], detections[1][0]):
                 if max(s) > confidence_threshold:
@@ -67,31 +61,20 @@ def process_image(image, image_path):
                        object_colors[bbox.get_label()],
                        2)
 
-    from PIL import ImageFont, ImageDraw, Image
+    image[:600, :920, :] //= 4
 
-    white = (255, 255, 255)
-    font = ImageFont.truetype("fonts\\cambria.ttc", 24)
-
-    img_pil = Image.fromarray(cv.cvtColor(image, cv.COLOR_BGR2RGB))
-    draw = ImageDraw.Draw(img_pil)
-    draw.text((832 + 25, 10 + 35), "some_text", font=font, fill=white)
-
-    img_pil.show()
-    exit(0)
-
-
-    # cv.putText(image,
-    #            f"Cars: {count[0]}",
-    #            (20, 150), font, 5, main_color, 2)
-    # cv.putText(image,
-    #            f"Buses: {count[1]}",
-    #            (20, 300), font, 5, main_color, 2)
-    # cv.putText(image,
-    #            f"Trucks: {count[2]}",
-    #            (20, 450), font, 5, main_color, 2)
-    # cv.putText(image,
-    #            f"All objects: {count[0] + count[1] + count[2]}",
-    #            (20, 600), font, 5, main_color, 2)
+    cv.putText(image,
+               f"Cars: {count[0]}",
+               (20, 100), font, color=main_color, fontScale=3, thickness=5)
+    cv.putText(image,
+               f"Buses: {count[1]}",
+               (20, 250), font, color=main_color, fontScale=3, thickness=5)
+    cv.putText(image,
+               f"Trucks: {count[2]}",
+               (20, 400), font, color=main_color, fontScale=3, thickness=5)
+    cv.putText(image,
+               f"All objects: {count[0] + count[1] + count[2]}",
+               (20, 550), font, color=main_color, fontScale=3, thickness=5)
 
     cv.imwrite(f'{predicted_images}\\{os.path.basename(image_path)}', image)
 

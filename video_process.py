@@ -4,7 +4,6 @@ import time
 import cv2 as cv
 import numpy as np
 import onnxruntime as rt
-import math
 from sys import stdout
 
 from settings import *
@@ -21,8 +20,6 @@ def process_image(image, frame_id):
     for x in x_coord:
         for y in y_coord:
             sample = image_for_slicing[:, :, y:y + blob_size, x:x + blob_size].copy()
-            # sample = cv.cvtColor(sample, cv.COLOR_BGR2RGB)
-            # sample = np.expand_dims(np.transpose(np.array(sample, dtype='float32'), [2, 0, 1]) / 255., axis=0)
 
             detections = sess.run(output_names, {input_name: sample})
             sample_detections = list()
@@ -93,6 +90,9 @@ if __name__ == '__main__':
 
             for bbox in bboxes:
                 for bbox_prev in bboxes_from_previous_frame:
+                    if bbox.get_label() != bbox_prev.get_label():
+                        continue
+
                     distance = calculate_distance(bbox.get_centre(), bbox_prev.get_centre())
 
                     if distance < 40:

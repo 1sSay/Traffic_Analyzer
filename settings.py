@@ -7,10 +7,6 @@ predicted_video = 'data\\predicted_videos\\predicted.avi'
 # Predicted
 image_folder = 'data\\photos_for_predicting\\'
 predicted_images = 'data\\predicted_photos\\'
-true_bboxes = ''
-
-dataset_path = 'C:\\OUR project\\model_testing\\probnii'
-name_for_stats = 'Evening'
 
 IoU_threshold_TP = 0.75
 IoU_threshold_FP = 0.10
@@ -41,7 +37,8 @@ area_threshold = {
 classes = {
     0: "car",
     1: "bus",
-    2: "truck"
+    2: "truck",
+    3: "all"
 }
 
 font = cv.QT_FONT_NORMAL
